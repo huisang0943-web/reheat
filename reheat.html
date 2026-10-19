@@ -1,0 +1,483 @@
+<!DOCTYPE html>
+<html lang="ko" class="scroll-smooth">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Reheat - 데이터센터 폐열 자원화 건축 통합 관제 시스템</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;600;700&family=Pretendard:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        reheat: {
+                            navy: '#1B365D',
+                            teal: '#2B808A',
+                            orange: '#F05A28',
+                            amber: '#FF9E1B',
+                            green: '#2D8A56',
+                            lightgreen: '#8CC63F',
+                            dark: '#0B1320'
+                        }
+                    }
+                }
+            }
+        }
+    </script>
+    <style>
+        body { font-family: 'Pretendard', sans-serif; }
+        .mono { font-family: 'JetBrains Mono', monospace; }
+        .blueprint-canvas {
+            background-color: #ffffff;
+            background-image: 
+                linear-gradient(rgba(27, 54, 93, 0.04) 1px, transparent 1px),
+                linear-gradient(90deg, rgba(27, 54, 93, 0.04) 1px, transparent 1px);
+            background-size: 30px 30px;
+        }
+        .cad-wall {
+            border: 2px solid #1B365D;
+            box-shadow: 0 10px 30px -10px rgba(27, 54, 93, 0.1);
+            background-color: #ffffff;
+        }
+        .reheat-text-gradient {
+            background: linear-gradient(135deg, #1B365D 0%, #F05A28 50%, #2D8A56 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+    </style>
+</head>
+<body class="bg-slate-50 text-slate-800 antialiased selection:bg-[#F05A28] selection:text-white">
+
+    <header class="bg-white/95 backdrop-blur-md border-b border-slate-200/80 sticky top-0 z-50 transition-all">
+        <div class="max-w-7xl mx-auto px-6 h-20 flex justify-between items-center">
+            <div class="flex items-center gap-3">
+                <div>
+                    <h1 class="text-xl font-black text-[#1B365D] tracking-tight flex items-center gap-1.5">
+                        reheat
+                        <span class="text-xs font-semibold px-2 py-0.5 rounded-full bg-slate-100 text-[#F05A28] border border-slate-200">리히트</span>
+                    </h1>
+                    <span class="block text-[10px] text-slate-500 font-mono tracking-wide">DC WASTE HEAT DISTRICT ENERGY SOLUTION</span>
+                </div>
+            </div>
+
+            <nav class="hidden md:flex items-center gap-8 text-sm font-semibold text-slate-600">
+                <a href="#hero" class="hover:text-[#F05A28] transition">홈</a>
+                <a href="#technology" class="hover:text-[#F05A28] transition">핵심 기술</a>
+                <a href="#simulator" class="text-[#1B365D] font-bold border-b-2 border-[#F05A28] pb-1">디지털 트윈 관제</a>
+                <a href="#impact" class="hover:text-[#F05A28] transition">ESG 성과</a>
+            </nav>
+
+            <div>
+                <a href="#simulator" class="bg-[#1B365D] hover:bg-[#122440] text-white text-xs font-bold px-5 py-3 rounded-xl transition shadow-md border border-[#2B808A]/30 flex items-center gap-2">
+                    <span class="w-2 h-2 rounded-full bg-[#F05A28] animate-pulse"></span>
+                    관제 시뮬레이터 실행
+                </a>
+            </div>
+        </div>
+    </header>
+
+    <main>
+        <section id="hero" class="relative overflow-hidden py-20 md:py-28 bg-gradient-to-b from-white via-slate-50 to-slate-100 border-b border-slate-200">
+            <div class="max-w-7xl mx-auto px-6 grid grid-cols-1 md:grid-cols-2 gap-12 items-center">
+                <div class="space-y-6">
+                    <h2 class="text-4xl md:text-5xl font-black text-slate-900 leading-tight tracking-tight">
+                        데이터센터의 버려지는 폐열, <br>
+                        <span class="reheat-text-gradient">도심 건물과 주거 공간의 온기가 되다</span>
+                    </h2>
+                    <p class="text-slate-600 text-base leading-relaxed">
+                        Reheat는 데이터센터 AI 서버에서 배출되는 저온 폐열을 특수 열교환 수송관망을 통해 회수하고, 도심 건물 및 아파트의 무탄소 지역난방 에너지로 재자원화하는 차세대 건축 통합 인프라 솔루션입니다.
+                    </p>
+                    <div class="flex items-center gap-4 pt-2">
+                        <a href="#simulator" class="bg-[#F05A28] hover:bg-[#d94a1b] text-white font-bold text-sm px-6 py-3.5 rounded-xl shadow-lg shadow-orange-500/20 transition flex items-center gap-2">
+                            건축 단면 평면도 관제 실행
+                        </a>
+                        <a href="#technology" class="bg-white border border-slate-300 hover:bg-slate-50 text-slate-700 font-bold text-sm px-6 py-3.5 rounded-xl transition">
+                            기술 메커니즘
+                        </a>
+                    </div>
+                </div>
+
+                <div class="bg-white p-6 md:p-8 rounded-3xl border border-slate-200/90 shadow-2xl relative overflow-hidden">
+                    <div class="absolute -right-12 -bottom-12 w-56 h-56 bg-[#F05A28]/5 rounded-full blur-3xl pointer-events-none"></div>
+                    <div class="absolute -left-12 -top-12 w-56 h-56 bg-[#2B808A]/5 rounded-full blur-3xl pointer-events-none"></div>
+                    
+                    <div class="relative z-10 space-y-5">
+                        <div class="flex justify-between items-center border-b border-slate-100 pb-3">
+                            <span class="text-xs font-mono font-bold text-[#1B365D] tracking-wider">REHEAT SYSTEM METRICS</span>
+                            <span class="inline-flex items-center gap-1.5 text-xs text-[#2D8A56] font-bold bg-[#2D8A56]/10 px-3 py-1 rounded-full">
+                                <span class="w-2 h-2 rounded-full bg-[#2D8A56] animate-pulse"></span> 실시간 연동 중
+                            </span>
+                        </div>
+                        <div class="grid grid-cols-2 gap-4">
+                            <div class="bg-slate-50 p-4 rounded-2xl border border-slate-200/60">
+                                <span class="text-xs text-slate-500 font-medium">CO2 감축 효과</span>
+                                <div class="text-2xl font-extrabold text-[#1B365D] mt-1 mono">78.4%</div>
+                                <span class="text-[10px] text-[#2D8A56] font-medium">화석연료 대비 절감</span>
+                            </div>
+                            <div class="bg-slate-50 p-4 rounded-2xl border border-slate-200/60">
+                                <span class="text-xs text-slate-500 font-medium">열에너지 자립률</span>
+                                <div class="text-2xl font-extrabold text-[#F05A28] mt-1 mono">94.2%</div>
+                                <span class="text-[10px] text-[#2B808A] font-medium">AI 분배 최적화 완료</span>
+                            </div>
+                        </div>
+                        <div class="p-4 bg-[#1B365D] text-white rounded-2xl text-xs space-y-2 border border-[#2B808A]/30">
+                            <div class="font-bold text-[#FF9E1B]">
+                                <span>엔지니어링 핵심 포인트</span>
+                            </div>
+                            <p class="text-slate-300 leading-relaxed text-[11px]">
+                                데이터센터 코어에서 배출되는 열원을 고층부로 이송할 때 발생되는 거리별 압력 손실을 딥러닝 알고리즘으로 자동 보정하여 균일한 난방 효율을 유지합니다.
+                            </p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section id="technology" class="py-20 bg-white border-b border-slate-200">
+            <div class="max-w-7xl mx-auto px-6 space-y-12">
+                <div class="text-center max-w-2xl mx-auto space-y-3">
+                    <span class="text-xs font-bold text-[#F05A28] tracking-widest uppercase font-mono">Core Technology</span>
+                    <h3 class="text-3xl font-extrabold text-[#1B365D]">왜 Reheat 건축 통합 시스템인가?</h3>
+                    <p class="text-slate-500 text-sm">서버 냉각수 열에너지 회수부터 건물 내부 유체 분배까지 완벽한 턴키 엔지니어링을 제공합니다.</p>
+                </div>
+
+                <div class="bg-[#1B365D] text-white p-8 md:p-12 rounded-3xl shadow-xl space-y-8 border border-[#2B808A]/30 relative overflow-hidden">
+                    <div class="absolute top-0 right-0 w-96 h-96 bg-[#2B808A]/10 rounded-full blur-3xl pointer-events-none"></div>
+                    <div class="text-center max-w-xl mx-auto space-y-2 relative z-10">
+                        <span class="text-xs font-bold text-[#FF9E1B] tracking-widest uppercase font-mono">4-STEP RECYCLING PROCESS</span>
+                        <h4 class="text-2xl font-bold">데이터센터 폐열 재활용 사이클</h4>
+                        <p class="text-slate-300 text-xs">서버에서 방출된 열이 도심 주거 공간의 온기가 되기까지의 전 과정을 소개합니다.</p>
+                    </div>
+
+                    <div class="grid grid-cols-1 md:grid-cols-4 gap-6 relative z-10">
+                        <div class="bg-white/5 backdrop-blur-sm p-6 rounded-2xl border border-white/10 space-y-3 relative hover:border-[#2B808A] transition">
+                            <div class="w-9 h-9 rounded-xl bg-[#2B808A]/30 text-[#2B808A] font-extrabold flex items-center justify-center text-sm font-mono border border-[#2B808A]/50">01</div>
+                            <h5 class="font-bold text-base text-white">서버 액체 냉각 회수</h5>
+                            <p class="text-xs text-slate-300 leading-relaxed">
+                                초고성능 AI 서버 랙 내부 수냉식 콜드플레이트(Direct-to-Chip)에서 발생한 45~60°C 온수를 즉시 회수합니다.
+                            </p>
+                        </div>
+                        <div class="bg-white/5 backdrop-blur-sm p-6 rounded-2xl border border-white/10 space-y-3 relative hover:border-[#F05A28] transition">
+                            <div class="w-9 h-9 rounded-xl bg-[#F05A28]/30 text-[#FF9E1B] font-extrabold flex items-center justify-center text-sm font-mono border border-[#F05A28]/50">02</div>
+                            <h5 class="font-bold text-base text-white">고효율 히트펌프 승온</h5>
+                            <p class="text-xs text-slate-300 leading-relaxed">
+                                열교환기 및 무탄소 고압 히트펌프(COP 4.5 이상)를 이용해 지역난방 공급용 표준 온도(65~80°C)로 증폭시킵니다.
+                            </p>
+                        </div>
+                        <div class="bg-white/5 backdrop-blur-sm p-6 rounded-2xl border border-white/10 space-y-3 relative hover:border-[#2D8A56] transition">
+                            <div class="w-9 h-9 rounded-xl bg-[#2D8A56]/30 text-[#8CC63F] font-extrabold flex items-center justify-center text-sm font-mono border border-[#2D8A56]/50">03</div>
+                            <h5 class="font-bold text-base text-white">도심 단열 배관 이송</h5>
+                            <p class="text-xs text-slate-300 leading-relaxed">
+                                진공 단열 특수 이중관 파이프 네트워크를 통해 층별 수직 관로 및 먼 거리 호실로 열손실 없이 이송합니다.
+                            </p>
+                        </div>
+                        <div class="bg-white/5 backdrop-blur-sm p-6 rounded-2xl border border-white/10 space-y-3 relative hover:border-[#FF9E1B] transition">
+                            <div class="w-9 h-9 rounded-xl bg-[#FF9E1B]/30 text-[#FF9E1B] font-extrabold flex items-center justify-center text-sm font-mono border border-[#FF9E1B]/50">04</div>
+                            <h5 class="font-bold text-base text-white">AI 맞춤형 가구 분배</h5>
+                            <p class="text-xs text-slate-300 leading-relaxed">
+                                Reheat 관제 시스템이 거리별 압력 손실 및 호실별 희망 온도를 고려하여 최적 유량을 자동 분배합니다.
+                            </p>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
+                    <div class="bg-slate-50 p-8 rounded-3xl border border-slate-200/80 space-y-4 hover:border-[#1B365D] transition">
+                        <div class="w-12 h-12 rounded-2xl bg-[#1B365D]/10 text-[#1B365D] flex items-center justify-center font-bold text-xl font-mono">01</div>
+                        <h4 class="text-lg font-bold text-slate-900">건축 단면 평면도 연동</h4>
+                        <p class="text-sm text-slate-600 leading-relaxed">
+                            건물 층별 및 호실별 수평 단면 구조를 도면화하여, 거리별 열손실 계수를 정밀 계산하고 시각화합니다.
+                        </p>
+                    </div>
+                    <div class="bg-slate-50 p-8 rounded-3xl border border-slate-200/80 space-y-4 hover:border-[#F05A28] transition">
+                        <div class="w-12 h-12 rounded-2xl bg-[#F05A28]/10 text-[#F05A28] flex items-center justify-center font-bold text-xl font-mono">02</div>
+                        <h4 class="text-lg font-bold text-slate-900">듀얼 열분배 제어 모드</h4>
+                        <p class="text-sm text-slate-600 leading-relaxed">
+                            사용자의 선택에 따라 희망온도 우선 모드와 에너지 자립지수 우선 모드를 즉시 전환하여 최적의 밸런스를 유지합니다.
+                        </p>
+                    </div>
+                    <div class="bg-slate-50 p-8 rounded-3xl border border-slate-200/80 space-y-4 hover:border-[#2D8A56] transition">
+                        <div class="w-12 h-12 rounded-2xl bg-[#2D8A56]/10 text-[#2D8A56] flex items-center justify-center font-bold text-xl font-mono">03</div>
+                        <h4 class="text-lg font-bold text-slate-900">실시간 열화상 관제</h4>
+                        <p class="text-sm text-slate-600 leading-relaxed">
+                            각 방의 현재 온도와 희망 온도를 직관적인 색상 구배로 확인하고, 슬라이더로 간편하게 조절할 수 있습니다.
+                        </p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section id="simulator" class="py-20 bg-slate-100/80">
+            <div class="max-w-7xl mx-auto px-6 space-y-8">
+                <div class="flex flex-col md:flex-row justify-between items-start md:items-end gap-4 border-b border-slate-200 pb-6">
+                    <div>
+                        <span class="text-xs font-bold text-[#F05A28] uppercase font-mono tracking-wider">Interactive Digital Twin</span>
+                        <h3 class="text-2xl md:text-3xl font-extrabold text-[#1B365D] mt-1">Reheat 건축 단면 평면도 및 폐열 관제 시스템</h3>
+                        <p class="text-slate-500 text-xs mt-1">데이터센터 폐열 공급량을 설정하고, 각 층별 호실의 희망 온도를 직접 조절하여 열분배 시뮬레이션을 수행하세요.</p>
+                    </div>
+                    <div class="flex items-center bg-white p-1.5 rounded-2xl border border-slate-200/80 shadow-sm">
+                        <button onclick="setMode('temp')" id="mode-temp" class="px-4 py-2 text-xs font-bold rounded-xl transition bg-[#1B365D] text-white shadow-sm">희망온도 우선</button>
+                        <button onclick="setMode('eco')" id="mode-eco" class="px-4 py-2 text-xs font-bold rounded-xl transition text-slate-600 hover:text-slate-900">자립지수 우선</button>
+                    </div>
+                </div>
+
+                <div class="grid grid-cols-2 md:grid-cols-4 gap-4">
+                    <div class="bg-white border border-slate-200/80 p-5 rounded-2xl shadow-sm">
+                        <span class="text-xs text-slate-500 font-medium">데이터센터 폐열 공급량</span>
+                        <div class="flex items-center gap-2 mt-2">
+                            <input type="range" id="wasteInput" min="100" max="300" value="180" class="w-full accent-[#F05A28]" oninput="updateWaste(this.value)">
+                            <span id="wasteVal" class="text-sm font-bold text-[#F05A28] mono whitespace-nowrap">180MW</span>
+                        </div>
+                    </div>
+                    <div class="bg-white border border-slate-200/80 p-5 rounded-2xl shadow-sm">
+                        <span class="text-xs text-slate-500 font-medium">건물 전체 총 열요구량</span>
+                        <div id="totalDemand" class="text-2xl font-extrabold text-[#1B365D] mono mt-2">0 Mcal/h</div>
+                    </div>
+                    <div class="bg-white border border-slate-200/80 p-5 rounded-2xl shadow-sm">
+                        <span class="text-xs text-slate-500 font-medium">평균 열손실률 (거리/수직 관로)</span>
+                        <div id="avgLoss" class="text-2xl font-extrabold text-[#2B808A] mono mt-2">0%</div>
+                    </div>
+                    <div class="bg-white border border-slate-200/80 p-5 rounded-2xl shadow-sm">
+                        <span class="text-xs text-slate-500 font-medium">Reheat 에너지 자립 지수</span>
+                        <div id="aiIndex" class="text-2xl font-extrabold text-[#2D8A56] mono mt-2">100%</div>
+                    </div>
+                </div>
+
+                <div class="bg-white border border-slate-200 rounded-3xl p-6 md:p-8 space-y-6 shadow-sm">
+                    <div class="flex flex-col sm:flex-row sm:items-center justify-between border-b border-slate-200 pb-4 gap-3">
+                        <div>
+                            <h4 class="text-base font-extrabold text-slate-900">
+                                <span>Reheat 건축 단면 평면도 (Floor Plan) 및 열화상 관제</span>
+                            </h4>
+                            <p class="text-xs text-slate-500 mt-0.5">3층으로 갈수록 데이터센터 코어와의 이격 거리가 길어져 열전달 손실이 증가합니다.</p>
+                        </div>
+                        <div class="flex items-center gap-1.5 bg-slate-100 p-1.5 rounded-xl border border-slate-200">
+                            <button onclick="switchFloor('f1')" id="tab-f1" class="px-4 py-2 text-xs font-bold rounded-lg transition bg-[#1B365D] text-white shadow-sm">1층 평면도</button>
+                            <button onclick="switchFloor('f2')" id="tab-f2" class="px-4 py-2 text-xs font-bold rounded-lg transition text-slate-600 hover:text-slate-900">2층 평면도</button>
+                            <button onclick="switchFloor('f3')" id="tab-f3" class="px-4 py-2 text-xs font-bold rounded-lg transition text-slate-600 hover:text-slate-900">3층 평면도</button>
+                        </div>
+                    </div>
+
+                    <div class="blueprint-canvas cad-wall rounded-2xl p-6 min-h-[480px] relative">
+                        <div class="mb-4 flex flex-col sm:flex-row justify-between items-start sm:items-center text-xs font-mono text-[#1B365D] border-b border-slate-300 pb-3 gap-2 font-semibold">
+                            <span id="floorTitle" class="text-sm font-bold">1층 수평 단면 평면도</span>
+                            <span class="text-slate-500">데이터센터 코어 연동 (거리별 열손실 및 온도 실시간 시각화)</span>
+                        </div>
+                        <div id="blueprintGrid" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
+                        </div>
+                    </div>
+
+                    <div class="flex justify-end pt-2">
+                        <button onclick="runAIOptimization()" class="bg-[#1B365D] hover:bg-[#122440] text-white text-xs font-extrabold px-6 py-3.5 rounded-xl transition shadow-lg border border-[#2B808A]/30 flex items-center gap-2 cursor-pointer">
+                            <span>열분배 최적화 실행</span>
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <footer class="bg-[#0B1320] text-slate-400 py-12 border-t border-slate-800">
+            <div class="max-w-7xl mx-auto px-6 flex flex-col md:flex-row justify-between items-center gap-6">
+                <div class="flex items-center gap-3">
+                    <div>
+                        <span class="text-white font-extrabold text-sm tracking-tight">Reheat Inc.</span>
+                        <span class="block text-[11px] text-slate-500">데이터센터 폐열 연동 건축물 통합 관제 솔루션</span>
+                    </div>
+                </div>
+                <p class="text-xs text-slate-500 font-mono">&copy; 2026 Reheat Corporation. All rights reserved.</p>
+            </div>
+        </footer>
+    </main>
+
+    <script>
+        const floorDataMap = {
+            f1: {
+                title: "1층 수평 단면 평면도",
+                rooms: {
+                    r11: { name: "101호", dist: 12, targetTemp: 20.0, currentTemp: 18.5 },
+                    r12: { name: "102호", dist: 24, targetTemp: 22.0, currentTemp: 21.0 },
+                    r13: { name: "103호", dist: 36, targetTemp: 23.5, currentTemp: 22.0 },
+                    r14: { name: "104호", dist: 48, targetTemp: 19.0, currentTemp: 18.0 }
+                }
+            },
+            f2: {
+                title: "2층 수평 단면 평면도",
+                rooms: {
+                    r21: { name: "201호", dist: 75, targetTemp: 22.0, currentTemp: 20.8 },
+                    r22: { name: "202호", dist: 95, targetTemp: 21.5, currentTemp: 19.8 },
+                    r23: { name: "203호", dist: 120, targetTemp: 22.5, currentTemp: 20.2 },
+                    r24: { name: "204호", dist: 145, targetTemp: 18.0, currentTemp: 16.5 }
+                }
+            },
+            f3: {
+                title: "3층 수평 단면 평면도",
+                rooms: {
+                    r31: { name: "301호", dist: 180, targetTemp: 24.0, currentTemp: 21.5 },
+                    r32: { name: "302호", dist: 210, targetTemp: 23.0, currentTemp: 20.0 },
+                    r33: { name: "303호", dist: 250, targetTemp: 22.5, currentTemp: 19.2 },
+                    r34: { name: "304호", dist: 290, targetTemp: 23.5, currentTemp: 19.8 }
+                }
+            }
+        };
+
+        let currentFloor = 'f1';
+        let wasteMW = 180;
+        let controlMode = 'temp';
+
+        function setMode(mode) {
+            controlMode = mode;
+            document.getElementById('mode-temp').className = mode === 'temp' 
+                ? "px-4 py-2 text-xs font-bold rounded-xl transition bg-[#1B365D] text-white shadow-sm"
+                : "px-4 py-2 text-xs font-bold rounded-xl transition text-slate-600 hover:text-slate-900";
+            document.getElementById('mode-eco').className = mode === 'eco' 
+                ? "px-4 py-2 text-xs font-bold rounded-xl transition bg-[#1B365D] text-white shadow-sm"
+                : "px-4 py-2 text-xs font-bold rounded-xl transition text-slate-600 hover:text-slate-900";
+            
+            applyModeLogic();
+            renderBlueprint();
+        }
+
+        function applyModeLogic() {
+            Object.keys(floorDataMap).forEach(fKey => {
+                let floor = floorDataMap[fKey];
+                Object.keys(floor.rooms).forEach(rKey => {
+                    let r = floor.rooms[rKey];
+                    const distLoss = r.dist * 0.012; 
+                    if (controlMode === 'temp') {
+                        r.currentTemp = parseFloat((r.targetTemp - distLoss).toFixed(1));
+                    } else {
+                        r.currentTemp = parseFloat((r.targetTemp - 0.8 - (distLoss * 1.1)).toFixed(1));
+                    }
+                });
+            });
+        }
+
+        function switchFloor(floorKey) {
+            currentFloor = floorKey;
+            ['f1', 'f2', 'f3'].forEach(f => {
+                const btn = document.getElementById(`tab-${f}`);
+                if (f === floorKey) {
+                    btn.className = "px-4 py-2 text-xs font-bold rounded-lg transition bg-[#1B365D] text-white shadow-sm";
+                } else {
+                    btn.className = "px-4 py-2 text-xs font-bold rounded-lg transition text-slate-600 hover:text-slate-900";
+                }
+            });
+            renderBlueprint();
+        }
+
+        function setTempDirect(roomId, val) {
+            let room = floorDataMap[currentFloor].rooms[roomId];
+            room.targetTemp = parseFloat(val);
+            applyModeLogic();
+            renderBlueprint();
+        }
+
+        function updateWaste(val) {
+            wasteMW = parseFloat(val);
+            document.getElementById('wasteVal').innerText = wasteMW + 'MW';
+            calcStats();
+        }
+
+        function getThermalColor(temp) {
+            if (temp >= 23) return 'bg-orange-50 border-orange-300 text-orange-900';
+            if (temp >= 21) return 'bg-amber-50 border-amber-300 text-amber-900';
+            if (temp >= 19) return 'bg-emerald-50 border-emerald-300 text-emerald-900';
+            return 'bg-sky-50 border-sky-300 text-sky-900';
+        }
+
+        function getBadgeColor(temp) {
+            if (temp >= 23) return 'bg-orange-100 text-orange-700 border-orange-200';
+            if (temp >= 21) return 'bg-amber-100 text-amber-700 border-amber-200';
+            if (temp >= 19) return 'bg-emerald-100 text-emerald-700 border-emerald-200';
+            return 'bg-sky-100 text-sky-700 border-sky-200';
+        }
+
+        function renderBlueprint() {
+            const container = document.getElementById('blueprintGrid');
+            const data = floorDataMap[currentFloor];
+            document.getElementById('floorTitle').innerText = data.title;
+
+            let html = '';
+            Object.keys(data.rooms).forEach(id => {
+                let r = data.rooms[id];
+                let heatReq = (r.targetTemp * 0.9 * (1 + r.dist * 0.003)).toFixed(1);
+                let efficiency = Math.max(35, (100 - r.dist * 0.18)).toFixed(0);
+                let cardStyle = getThermalColor(r.currentTemp);
+                let badgeStyle = getBadgeColor(r.currentTemp);
+
+                html += `
+                    <div class="${cardStyle} border rounded-2xl p-4 flex flex-col justify-between shadow-sm relative transition-all duration-300">
+                        <div class="absolute top-3 right-3 text-[10px] font-mono ${badgeStyle} px-2.5 py-0.5 rounded-full border font-bold">
+                            현재 ${r.currentTemp}°C
+                        </div>
+                        <div>
+                            <h5 class="text-sm font-extrabold mt-1 text-slate-900">${r.name}</h5>
+                            <div class="flex items-center gap-2 mt-1 text-[10px] opacity-75 font-mono">
+                                <span>공급거리: ${r.dist}m</span>
+                                <span class="font-semibold">효율 ${efficiency}%</span>
+                            </div>
+                        </div>
+
+                        <div class="bg-white/90 backdrop-blur p-3 rounded-xl border border-slate-200 space-y-2 my-3 shadow-inner">
+                            <div class="flex justify-between items-center text-[11px]">
+                                <span class="text-slate-600 font-bold">희망 온도</span>
+                                <span class="mono font-extrabold text-[#F05A28]">${r.targetTemp.toFixed(1)}°C</span>
+                            </div>
+                            <div class="flex items-center gap-2">
+                                <input type="range" min="16" max="28" step="0.5" value="${r.targetTemp}" oninput="setTempDirect('${id}', this.value)" class="w-full accent-[#F05A28] cursor-pointer">
+                            </div>
+                        </div>
+
+                        <div class="text-[10px] font-mono opacity-80 flex justify-between pt-2 border-t border-slate-200/60">
+                            <span>소요 폐열량:</span>
+                            <span class="font-bold text-[#F05A28]">${heatReq} Mcal/h</span>
+                        </div>
+                    </div>
+                `;
+            });
+            container.innerHTML = html;
+            calcStats();
+        }
+
+        function calcStats() {
+            let totalDemand = 0;
+            let totalDistW = 0;
+            let count = 0;
+
+            Object.keys(floorDataMap).forEach(fKey => {
+                let floor = floorDataMap[fKey];
+                Object.keys(floor.rooms).forEach(rKey => {
+                    let r = floor.rooms[rKey];
+                    let multiplier = controlMode === 'eco' ? 0.82 : 0.9;
+                    totalDemand += (r.targetTemp * multiplier * (1 + r.dist * 0.003));
+                    totalDistW += (r.dist * 0.03);
+                    count++;
+                });
+            });
+
+            document.getElementById('totalDemand').innerText = totalDemand.toFixed(1) + ' Mcal/h';
+            let avgLoss = (totalDistW / count).toFixed(1);
+            document.getElementById('avgLoss').innerText = avgLoss + '%';
+            
+            let ecoBonus = controlMode === 'eco' ? 7.5 : 0.0;
+            let aiIdx = Math.min(100, (wasteMW / (totalDemand * 0.55)) * 90 + ecoBonus).toFixed(1);
+            document.getElementById('aiIndex').innerText = aiIdx + '%';
+        }
+
+        function runAIOptimization() {
+            const b = document.createElement('div');
+            b.className = "fixed bottom-6 right-6 bg-[#1B365D] text-white px-6 py-3.5 rounded-2xl shadow-2xl font-bold text-xs z-50 flex items-center gap-3 border border-[#2B808A]/40 animate-bounce";
+            let modeName = controlMode === 'temp' ? '희망온도 최우선 유량 최적화' : '에너지 자립지수 극대화 ECO 모드';
+            b.innerHTML = `<span class="w-2.5 h-2.5 rounded-full bg-[#F05A28] animate-ping"></span> Reheat 관제시스템: [${modeName}] 건축물 관로 압력 밸런싱 완료`;
+            document.body.appendChild(b);
+            setTimeout(() => { b.remove(); }, 3500);
+        }
+
+        window.onload = function() {
+            applyModeLogic();
+            renderBlueprint();
+        };
+    </script>
+</body>
+</html>
